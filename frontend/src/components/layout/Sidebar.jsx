@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
+import { APP_TITLE } from "@/config/appTarget";
 import {
   LayoutDashboard, Trophy, Users, UserPlus, Bell, User, ClipboardList,
   BarChart3, ShieldCheck, GraduationCap, Zap
@@ -43,7 +44,7 @@ export function Sidebar() {
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--primary)]">
           <Trophy className="h-4 w-4 text-white" />
         </div>
-        <span className="text-lg font-bold text-white tracking-tight">HackPortal</span>
+        <span className="text-lg font-bold text-white tracking-tight">{APP_TITLE}</span>
       </div>
 
       {/* Navigation */}

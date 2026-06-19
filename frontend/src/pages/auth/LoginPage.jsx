@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { login } from "@/api/auth.api";
 import { setCredentials } from "@/store/authSlice";
+import { isRoleAllowedHere, PORTAL_LABEL } from "@/config/appTarget";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -34,6 +35,11 @@ export default function LoginPage() {
     try {
       const res = await login(data);
       const { user, token } = res.data?.data || res.data;
+      // This build is scoped to one audience; reject accounts that don't belong here.
+      if (!isRoleAllowedHere(user?.role)) {
+        toast.error(`This portal is for ${PORTAL_LABEL}. Please use the correct portal.`);
+        return;
+      }
       dispatch(setCredentials({ user, token }));
       toast.success("Welcome back!");
       if (user?.forcePasswordChange) {

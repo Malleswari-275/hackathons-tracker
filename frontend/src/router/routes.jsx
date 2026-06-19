@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleRoute } from "./RoleRoute";
+import { isAdminApp } from "@/config/appTarget";
 
 // Auth pages
 import LoginPage from "@/pages/auth/LoginPage";
@@ -29,6 +30,70 @@ import RegistrationPage from "@/pages/registrations/RegistrationPage";
 import NotificationsPage from "@/pages/notifications/NotificationsPage";
 import ProfilePage from "@/pages/profile/ProfilePage";
 
+// Routes available in every build (student + admin)
+const commonChildren = [
+  { index: true, element: <Navigate to="/dashboard" replace /> },
+  { path: "dashboard", element: <DashboardPage /> },
+  { path: "change-password", element: <ChangePasswordPage /> },
+  { path: "profile", element: <ProfilePage /> },
+  { path: "notifications", element: <NotificationsPage /> },
+  { path: "competitions", element: <CompetitionListPage /> },
+  { path: "competitions/:id", element: <CompetitionDetailPage /> },
+  { path: "registrations/:competitionId", element: <RegistrationPage /> },
+];
+
+// Routes that only exist in the admin build
+const adminChildren = [
+  {
+    path: "competitions/new",
+    element: (
+      <RoleRoute allowedRoles={["SUPER_ADMIN", "ADMIN"]}>
+        <CreateCompetitionPage />
+      </RoleRoute>
+    ),
+  },
+  {
+    path: "competitions/:id/edit",
+    element: (
+      <RoleRoute allowedRoles={["SUPER_ADMIN", "ADMIN"]}>
+        <EditCompetitionPage />
+      </RoleRoute>
+    ),
+  },
+  {
+    path: "competitions/:id/review",
+    element: (
+      <RoleRoute allowedRoles={["SUPER_ADMIN"]}>
+        <ReviewCompetitionPage />
+      </RoleRoute>
+    ),
+  },
+  {
+    path: "users/admins",
+    element: (
+      <RoleRoute allowedRoles={["SUPER_ADMIN"]}>
+        <AdminManagementPage />
+      </RoleRoute>
+    ),
+  },
+  {
+    path: "users/students",
+    element: (
+      <RoleRoute allowedRoles={["SUPER_ADMIN", "ADMIN"]}>
+        <StudentManagementPage />
+      </RoleRoute>
+    ),
+  },
+  {
+    path: "assignments/:competitionId",
+    element: (
+      <RoleRoute allowedRoles={["SUPER_ADMIN", "ADMIN"]}>
+        <AssignmentPage />
+      </RoleRoute>
+    ),
+  },
+];
+
 export const router = createBrowserRouter([
   // Public routes
   { path: "/login", element: <LoginPage /> },
@@ -43,70 +108,7 @@ export const router = createBrowserRouter([
         <DashboardLayout />
       </ProtectedRoute>
     ),
-    children: [
-      { index: true, element: <Navigate to="/dashboard" replace /> },
-      { path: "dashboard", element: <DashboardPage /> },
-      { path: "change-password", element: <ChangePasswordPage /> },
-      { path: "profile", element: <ProfilePage /> },
-      { path: "notifications", element: <NotificationsPage /> },
-
-      // Competitions
-      { path: "competitions", element: <CompetitionListPage /> },
-      {
-        path: "competitions/new",
-        element: (
-          <RoleRoute allowedRoles={["SUPER_ADMIN", "ADMIN"]}>
-            <CreateCompetitionPage />
-          </RoleRoute>
-        ),
-      },
-      { path: "competitions/:id", element: <CompetitionDetailPage /> },
-      {
-        path: "competitions/:id/edit",
-        element: (
-          <RoleRoute allowedRoles={["SUPER_ADMIN", "ADMIN"]}>
-            <EditCompetitionPage />
-          </RoleRoute>
-        ),
-      },
-      {
-        path: "competitions/:id/review",
-        element: (
-          <RoleRoute allowedRoles={["SUPER_ADMIN"]}>
-            <ReviewCompetitionPage />
-          </RoleRoute>
-        ),
-      },
-
-      // User Management
-      {
-        path: "users/admins",
-        element: (
-          <RoleRoute allowedRoles={["SUPER_ADMIN"]}>
-            <AdminManagementPage />
-          </RoleRoute>
-        ),
-      },
-      {
-        path: "users/students",
-        element: (
-          <RoleRoute allowedRoles={["SUPER_ADMIN", "ADMIN"]}>
-            <StudentManagementPage />
-          </RoleRoute>
-        ),
-      },
-
-      // Assignments & Registrations
-      {
-        path: "assignments/:competitionId",
-        element: (
-          <RoleRoute allowedRoles={["SUPER_ADMIN", "ADMIN"]}>
-            <AssignmentPage />
-          </RoleRoute>
-        ),
-      },
-      { path: "registrations/:competitionId", element: <RegistrationPage /> },
-    ],
+    children: isAdminApp ? [...commonChildren, ...adminChildren] : commonChildren,
   },
 
   // Catch-all
