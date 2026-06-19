@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(ssh -i /c/Users/Hp/Downloads/sd.pem -o StrictHostKeyChecking=accept-new ubuntu@54.86.136.41 'bash -s')",
+      "Bash(tar -czf /tmp/backend.tar.gz -C /c/Users/Hp/Downloads/Hack-db app.js server.js package.json package-lock.json src)"
+    ]
+  }
+}

@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+/* ========================================
+   BRAND COLOR DESIGN SYSTEM
+   ======================================== */
+
+@theme {
+  /* Brand Colors */
+  --color-brand-blue: #065299;
+  --color-brand-orange: #d06c38;
+  --color-brand-gold: #BE9337;
+  --color-brand-dark: #0D2338;
+
+  /* Extended brand palette */
+  --color-brand-blue-light: #3B8DD9;
+  --color-brand-orange-light: #E07D4A;
+  --color-brand-gold-light: #D4A84B;
+
+  /* Sidebar */
+  --color-sidebar: #0D2338;
+  --color-sidebar-dark: #071420;
+  --color-sidebar-foreground: #CBD5E1;
+  --color-sidebar-active: #065299;
+
+  /* Radii */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+}
+
+/* ========================================
+   LIGHT MODE (default)
+   ======================================== */
+
+:root {
+  --background: #F8FAFB;
+  --foreground: #0D2338;
+  --card: #FFFFFF;
+  --card-foreground: #0D2338;
+  --popover: #FFFFFF;
+  --popover-foreground: #0D2338;
+  --primary: #065299;
+  --primary-foreground: #FFFFFF;
+  --secondary: #d06c38;
+  --secondary-foreground: #FFFFFF;
+  --accent: #BE9337;
+  --accent-foreground: #FFFFFF;
+  --muted: #F1F5F9;
+  --muted-foreground: #64748B;
+  --border: #E2E8F0;
+  --input: #E2E8F0;
+  --ring: #065299;
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+  --success: #22C55E;
+  --success-foreground: #FFFFFF;
+  --warning: #F59E0B;
+  --warning-foreground: #FFFFFF;
+}
+
+/* ========================================
+   DARK MODE
+   ======================================== */
+
+.dark {
+  --background: #0B1929;
+  --foreground: #E2E8F0;
+  --card: #0D2338;
+  --card-foreground: #E2E8F0;
+  --popover: #0D2338;
+  --popover-foreground: #E2E8F0;
+  --primary: #3B8DD9;
+  --primary-foreground: #FFFFFF;
+  --secondary: #E07D4A;
+  --secondary-foreground: #FFFFFF;
+  --accent: #D4A84B;
+  --accent-foreground: #FFFFFF;
+  --muted: #1A2E45;
+  --muted-foreground: #94A3B8;
+  --border: #1E3A5C;
+  --input: #1E3A5C;
+  --ring: #3B8DD9;
+  --destructive: #F87171;
+  --destructive-foreground: #FFFFFF;
+  --success: #4ADE80;
+  --success-foreground: #0D2338;
+  --warning: #FBBF24;
+  --warning-foreground: #0D2338;
+}
+
+/* ========================================
+   BASE STYLES
+   ======================================== */
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Scrollbar Styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--muted-foreground);
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+  }
+}
