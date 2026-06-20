@@ -6,16 +6,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { login } from "@/api/auth.api";
 import { setCredentials } from "@/store/authSlice";
-import { isRoleAllowedHere, PORTAL_LABEL } from "@/config/appTarget";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Trophy, Eye, EyeOff } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 
+const ROLE_LABELS = { SUPER_ADMIN: "Super Admin", ADMIN: "Admin", STUDENT: "Student" };
+
 const schema = z.object({
+  role: z.string().min(1, "Please select your role"),
   email: z.string().email("Please enter a valid email"),
   password: z.string().min(1, "Password is required"),
 });
@@ -33,11 +36,11 @@ export default function LoginPage() {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      const res = await login(data);
+      const res = await login({ email: data.email, password: data.password });
       const { user, token } = res.data?.data || res.data;
-      // This build is scoped to one audience; reject accounts that don't belong here.
-      if (!isRoleAllowedHere(user?.role)) {
-        toast.error(`This portal is for ${PORTAL_LABEL}. Please use the correct portal.`);
+      // The account's real role comes from the backend; the dropdown must match it.
+      if (user?.role !== data.role) {
+        toast.error(`This account isn't a ${ROLE_LABELS[data.role]} account. Please pick the correct role.`);
         return;
       }
       dispatch(setCredentials({ user, token }));
@@ -79,6 +82,17 @@ export default function LoginPage() {
 
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="role">Login as</Label>
+                <Select id="role" defaultValue="" {...register("role")}>
+                  <option value="">Select your role</option>
+                  <option value="STUDENT">Student</option>
+                  <option value="ADMIN">Admin</option>
+                  <option value="SUPER_ADMIN">Super Admin</option>
+                </Select>
+                {errors.role && <p className="text-xs text-[var(--destructive)]">{errors.role.message}</p>}
+              </div>
+
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input id="email" type="email" placeholder="you@example.com" {...register("email")} />

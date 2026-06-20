@@ -2,7 +2,6 @@ import { NavLink } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 import { X, Trophy, LayoutDashboard, Bell, User, ShieldCheck, GraduationCap, Zap } from "lucide-react";
-import { APP_TITLE } from "@/config/appTarget";
 
 const navItems = {
   SUPER_ADMIN: [
@@ -45,7 +44,7 @@ export function MobileDrawer({ open, onClose }) {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--primary)]">
               <Trophy className="h-4 w-4 text-white" />
             </div>
-            <span className="text-lg font-bold text-white">{APP_TITLE}</span>
+            <span className="text-lg font-bold text-white">HackPortal</span>
           </div>
           <button onClick={onClose} className="text-white/60 hover:text-white cursor-pointer">
             <X className="h-5 w-5" />

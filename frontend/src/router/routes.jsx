@@ -2,7 +2,6 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleRoute } from "./RoleRoute";
-import { isAdminApp } from "@/config/appTarget";
 
 // Auth pages
 import LoginPage from "@/pages/auth/LoginPage";
@@ -108,7 +107,7 @@ export const router = createBrowserRouter([
         <DashboardLayout />
       </ProtectedRoute>
     ),
-    children: isAdminApp ? [...commonChildren, ...adminChildren] : commonChildren,
+    children: [...commonChildren, ...adminChildren],
   },
 
   // Catch-all
